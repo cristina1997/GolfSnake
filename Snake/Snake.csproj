@@ -285,6 +285,9 @@
     <Compile Include="Assets\Scripts\GameControl.cs" />
     <Compile Include="Assets\Scripts\Snake.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Fonts\henny-penny\SIL Open Font License.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

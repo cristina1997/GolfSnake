@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 // Code adapted from https://www.youtube.com/watch?v=Sau81jWbGRY&index=5&list=PLWeGoBm1YHVhc51TYY7fTLNbA02qkyLrA&ab_channel=InfoGamer
@@ -170,5 +171,17 @@ public class GameControl : MonoBehaviour {
             score += 10; ;
         }
 
+        if (eatenObject == "Snake")
+        {
+            // Prevents snake from moving any further
+            CancelInvoke("Timer");
+            Exit();
+        }
+
+    }
+
+    private void Exit()
+    {
+        SceneManager.LoadScene(0);
     }
 }

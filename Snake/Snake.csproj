@@ -285,6 +285,8 @@
     <Compile Include="Assets\Scripts\Game\GameControl.cs" />
     <Compile Include="Assets\Scripts\Game\Snake.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenuControl.cs" />
+    <Compile Include="Assets\Scripts\Pause\PauseMenu.cs" />
+    <Compile Include="Assets\Scripts\Pause\ShowPauseMenu.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

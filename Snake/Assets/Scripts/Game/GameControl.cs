@@ -185,12 +185,12 @@ public class GameControl : MonoBehaviour {
         {
             // Prevents snake from moving any further
             CancelInvoke("Timer");
-            Exit();
+            MainMenu();
         }
 
     } // Eat
 
-    public void Exit()
+    public void MainMenu()
     {
         SceneManager.LoadScene(0);
     }

@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 9cffe3f50fbbc1046ba090b644566a99
+  - enabled: 1
+    path: Assets/Scenes/Snake.unity
+    guid: d0e005d50b04e82499e4bd6de7cb5f09

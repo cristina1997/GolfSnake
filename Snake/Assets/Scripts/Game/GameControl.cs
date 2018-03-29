@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
@@ -14,6 +15,7 @@ public class GameControl : MonoBehaviour {
     public string direction;
     public Vector2 newPos;
     private Quaternion rotation;
+    public Text scoreText;
 
     private void OnEnable()
     {
@@ -168,7 +170,14 @@ public class GameControl : MonoBehaviour {
             // Instantiate new food Object
             CreateFood();
             maxSize++;
-            score += 10; ;
+            score += 10;
+            scoreText.text = score.ToString();
+            int temp = PlayerPrefs.GetInt("HighScore");
+
+            if (score > temp)
+            {
+                PlayerPrefs.SetInt("HighScore", score);
+            }
         }
 
         if (eatenObject == "Snake")
@@ -180,7 +189,7 @@ public class GameControl : MonoBehaviour {
 
     }
 
-    private void Exit()
+    public void Exit()
     {
         SceneManager.LoadScene(0);
     }

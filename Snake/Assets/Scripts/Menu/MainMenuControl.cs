@@ -27,4 +27,5 @@ public class MainMenuControl : MonoBehaviour {
     {
         highScore.text = PlayerPrefs.GetInt("HighScore").ToString();
     }
+
 }

@@ -46,7 +46,7 @@ public class GameControl : MonoBehaviour {
     void Timer()
     {
         Movement();
-
+        StartCoroutine(CheckVisible());
 
         // Keeps the snake from growing any longer if it's at its maximum size
         if (currentSize >= maxSize)
@@ -58,6 +58,7 @@ public class GameControl : MonoBehaviour {
         {
             currentSize++;
         }
+
     } // Timer
 
     void Movement()
@@ -187,10 +188,57 @@ public class GameControl : MonoBehaviour {
             Exit();
         }
 
-    }
+    } // Eat
 
     public void Exit()
     {
         SceneManager.LoadScene(0);
     }
+
+    void Wrap()
+    {
+        switch (direction)
+        {
+            // If snake goes off the top of the screen it appears at the bottom and vice versa
+            // Otherwise if snake goes off left side of the screen it appears on the right and vice versa
+            case "UP":
+
+                // y position going of the right side is positive
+                    // y position decremented by 1 - negative and then flips it
+                head.transform.position = new Vector2(head.transform.position.x, -(head.transform.position.y - 1));
+                break;
+            case "RIGHT":
+
+                // x position going of the right side is positive
+                    // x position decremented by 1 - negative and then flips it
+                head.transform.position = new Vector2(-(head.transform.position.x - 1), head.transform.position.y);
+                break;
+            case "DOWN":
+
+                // y position going of the right side is negative
+                    // y position decremented by 1 - positive and then flips it
+                head.transform.position = new Vector2(head.transform.position.x, -(head.transform.position.y + 1));
+                break;
+            case "LEFT":
+
+                // x position going of the right side is negative
+                    // x position decremented by 1 - positive and then flips it
+                head.transform.position = new Vector2(-(head.transform.position.x + 1), head.transform.position.y);
+                break;
+        }
+    } // Wrap
+
+    IEnumerator CheckVisible()
+    {
+        // Wait 'til end of frame to execute code after it
+        yield return new WaitForEndOfFrame();      
+        
+        // Check if current object is visible
+        if (!head.GetComponent<Renderer>().isVisible)
+        {
+            Wrap();
+        }
+
+    } // CheckRenderer
+    
 }

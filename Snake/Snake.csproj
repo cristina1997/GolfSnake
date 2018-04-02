@@ -14,6 +14,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1f1</UnityVersion>
@@ -253,6 +254,12 @@
     <Reference Include="UnityEditor.Graphs">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.Android.Extensions">
+      <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WSA.Extensions">
+      <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.WSA.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
@@ -282,10 +289,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Game Over\GameOverControl.cs" />
+    <Compile Include="Assets\Scripts\Game Over\GameOverManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameControl.cs" />
     <Compile Include="Assets\Scripts\Game\Snake.cs" />
+    <Compile Include="Assets\Scripts\Game\SnakeFood.cs" />
+    <Compile Include="Assets\Scripts\Game\SnakeHealth.cs" />
+    <Compile Include="Assets\Scripts\Game\SnakeMovement.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenuControl.cs" />
-    <Compile Include="Assets\Scripts\Pause\PauseMenu.cs" />
+    <Compile Include="Assets\Scripts\Pause\PauseMenuControl.cs" />
     <Compile Include="Assets\Scripts\Pause\ShowPauseMenu.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

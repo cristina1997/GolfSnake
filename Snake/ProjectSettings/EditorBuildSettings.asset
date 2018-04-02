@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Snake.unity
     guid: d0e005d50b04e82499e4bd6de7cb5f09
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 5bd932b9b794ea243b7b7b7bdc97da4d

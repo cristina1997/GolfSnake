@@ -8,15 +8,11 @@ public class MainMenuControl : MonoBehaviour {
     public Text highScore;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         HighScore();
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     public void Play()
     {
@@ -31,6 +27,12 @@ public class MainMenuControl : MonoBehaviour {
     void HighScore()
     {
         highScore.text = PlayerPrefs.GetInt("HighScore").ToString();
+    }
+
+    public void Quit()
+    {
+
+        Application.Quit();
     }
 
 }

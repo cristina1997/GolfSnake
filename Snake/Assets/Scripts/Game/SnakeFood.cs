@@ -9,8 +9,13 @@ public class SnakeFood : MonoBehaviour {
     public int xSpawn, ySpawn;
     public static int foodEaten;
     public int score;
+    public const int speedFoodTime = 90, healthFoodTime = 300;
+    public int healthFood, speedUpFood;
+    public static bool isFaster, isHealthy;
+
     public GameObject food, currentFood;
     public Text scoreText;
+    
 
     private void OnEnable()
     {
@@ -26,6 +31,65 @@ public class SnakeFood : MonoBehaviour {
     {
         CreateFood();
         foodEaten = 0;
+        speedUpFood = 0;
+        healthFood = 0;
+
+    }
+
+    private void Update()
+    {
+        Speed();
+        Health();
+    }
+
+    private void Speed()
+    {
+        float foodSpeedCountDown = speedFoodTime;
+        foodSpeedCountDown -= Time.time;
+
+        if (foodSpeedCountDown < 0 || (foodSpeedCountDown >= 0 && speedUpFood >= 3))
+        {
+            if (speedUpFood >= 3)
+            {
+                isFaster = true;
+            }
+            else if (speedUpFood < 3)
+            {
+                isFaster = false;
+            }
+            speedUpFood = 0;
+            foodSpeedCountDown = speedFoodTime;
+        }
+
+        /*
+        Debug.Log("isFaster: " + isFaster);
+        Debug.Log("speedUpFood: " + speedUpFood);
+        Debug.Log("foodSpeedCountDown: " + foodSpeedCountDown);*/
+
+    }
+
+    private void Health()
+    {
+        float healtChountDown = healthFoodTime;
+        healtChountDown -= Time.time;
+
+        if (healtChountDown < 0 || (healtChountDown >= 0 && healthFood >= 10))
+        {
+            if (healthFood >= 10)
+            {
+                isHealthy = true;
+            }
+            else if (healthFood < 10)
+            {
+                isHealthy = false;
+            }
+            healthFood = 0;
+            healtChountDown = healthFoodTime;
+        }
+        /*
+        Debug.Log("isHealthy: " + isHealthy);
+        Debug.Log("speedUpFood: " + speedUpFood);
+        Debug.Log("healtChountDown: " + healtChountDown);*/
     }
 
     void CreateFood()
@@ -67,13 +131,15 @@ public class SnakeFood : MonoBehaviour {
             // Instantiate new food Object
             CreateFood();
             foodEaten++;
+            speedUpFood++;
+            healthFood++;
             score += 10;
             scoreText.text = score.ToString();
-            int temp = PlayerPrefs.GetInt("HighScore");
+            int temp = PlayerPrefs.GetInt("HighScore", 0);
 
             if (score > temp)
             {
-                PlayerPrefs.SetInt("HighScore", 0);
+                PlayerPrefs.SetInt("HighScore", score);
             }
         }
 

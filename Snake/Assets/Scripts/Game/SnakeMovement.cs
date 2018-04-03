@@ -4,29 +4,62 @@ using UnityEngine;
 
 // Code adapted from https://www.youtube.com/watch?v=Sau81jWbGRY&index=5&list=PLWeGoBm1YHVhc51TYY7fTLNbA02qkyLrA&ab_channel=InfoGamer
 public class SnakeMovement : MonoBehaviour {
-    public int newMax, maxSize, currentSize;
+    public int newMaxSize, maxSize, currentSize;
     public GameObject snake;
     public Snake head, tail;
     public SnakeFood snakeFood;
     public string direction;
     public Vector2 newPos;
     private Quaternion rotation;
-
+    public const float speedTimerInit = 0.05f, speedResetInit = 300f, startSpeedValue = 0.5f;
+    public float speedTimerCountdown, speedResetCountdown;
+    
     private void Start()
     {
-        InvokeRepeating("Timer", 0, 0.5f);
+        speedTimerCountdown = startSpeedValue;
+
+        InvokeRepeating("Timer", 0, speedTimerCountdown);
         direction = "UP";
         currentSize = 1;
         maxSize = 2;
+    }
+    
+    public void SpeedCalculation()
+    {
+       if (SnakeFood.healthyFood != 0)
+        {
+            speedTimerCountdown -= 0.05f;
+            CancelInvoke("Timer");
+            InvokeRepeating("Timer", 0, speedTimerCountdown);
+        }
+    }
+
+    public void SpeedReset()
+    {        
+
+        float speedResetCountdown = speedResetInit;
+        speedResetCountdown -= Time.time;
+                
+        if (speedResetCountdown < 0)
+        {
+            speedResetCountdown = speedResetInit;
+            speedTimerCountdown = startSpeedValue;
+        }
     }
 
     private void Update()
     {
         PreventBackwardMovement();
+        SpeedReset();
 
         // Calculates the new maximum size of the snake
-        newMax = SnakeFood.foodEaten;
-        newMax += maxSize;
+        newMaxSize = SnakeFood.foodEaten;
+        newMaxSize += maxSize;
+
+        if (SnakeFood.isFaster && speedTimerCountdown >= 0.3f)
+        {
+            SpeedCalculation();
+        }
     }
 
     void Timer()
@@ -36,7 +69,7 @@ public class SnakeMovement : MonoBehaviour {
                 
         // Keeps the snake from growing any longer if it's at its maximum size 
 
-        if (currentSize >= newMax)
+        if (currentSize >= newMaxSize)
         {
             UpdateTail();
         }

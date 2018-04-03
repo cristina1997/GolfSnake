@@ -9,8 +9,8 @@ public class SnakeFood : MonoBehaviour {
     public int xSpawn, ySpawn;
     public static int foodEaten;
     public int score;
-    public const int speedFoodTime = 90, healthFoodTime = 300;
-    public int healthFood, speedUpFood;
+    public const int speedTimeInit = 90, healthyFoodTimeInit = 300;
+    public static int healthyFood, speedUpFood;
     public static bool isFaster, isHealthy;
 
     public GameObject food, currentFood;
@@ -32,7 +32,7 @@ public class SnakeFood : MonoBehaviour {
         CreateFood();
         foodEaten = 0;
         speedUpFood = 0;
-        healthFood = 0;
+        healthyFood = 0;
 
     }
 
@@ -40,25 +40,29 @@ public class SnakeFood : MonoBehaviour {
     {
         Speed();
         Health();
+        
     }
 
     private void Speed()
     {
-        float foodSpeedCountDown = speedFoodTime;
+        float foodSpeedCountDown = speedTimeInit;
         foodSpeedCountDown -= Time.time;
 
-        if (foodSpeedCountDown < 0 || (foodSpeedCountDown >= 0 && speedUpFood >= 3))
+        if (foodSpeedCountDown < 0 || (foodSpeedCountDown >= 0 && speedUpFood <= 3))
         {
+            
             if (speedUpFood >= 3)
             {
-                isFaster = true;
+                isFaster = true;                
+                speedUpFood = 0;
+
             }
             else if (speedUpFood < 3)
             {
                 isFaster = false;
             }
-            speedUpFood = 0;
-            foodSpeedCountDown = speedFoodTime;
+
+            foodSpeedCountDown = speedTimeInit;
         }
 
         /*
@@ -70,21 +74,22 @@ public class SnakeFood : MonoBehaviour {
 
     private void Health()
     {
-        float healtChountDown = healthFoodTime;
+        float healtChountDown = healthyFoodTimeInit;
         healtChountDown -= Time.time;
 
-        if (healtChountDown < 0 || (healtChountDown >= 0 && healthFood >= 10))
+        if (healtChountDown < 0 || (healtChountDown >= 0 && healthyFood <= 10))
         {
-            if (healthFood >= 10)
+            if (healthyFood >= 10)
             {
                 isHealthy = true;
+                healthyFood = 0;
             }
-            else if (healthFood < 10)
+            else if (healthyFood < 10)
             {
                 isHealthy = false;
             }
-            healthFood = 0;
-            healtChountDown = healthFoodTime;
+            
+            healtChountDown = healthyFoodTimeInit;
         }
         /*
         Debug.Log("isHealthy: " + isHealthy);
@@ -132,7 +137,7 @@ public class SnakeFood : MonoBehaviour {
             CreateFood();
             foodEaten++;
             speedUpFood++;
-            healthFood++;
+            healthyFood++;
             score += 10;
             scoreText.text = score.ToString();
             int temp = PlayerPrefs.GetInt("HighScore", 0);

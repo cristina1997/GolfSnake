@@ -321,7 +321,7 @@ GameObject:
   - component: {fileID: 335822959}
   - component: {fileID: 335822963}
   m_Layer: 5
-  m_Name: Pause Canvas
+  m_Name: Main Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -780,6 +780,7 @@ GameObject:
   - component: {fileID: 1598873186}
   - component: {fileID: 1598873187}
   - component: {fileID: 1598873188}
+  - component: {fileID: 1598873185}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -787,6 +788,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1598873185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1598873184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 800d88c378abefd448ae703de317bc59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingHealth: 100
+  currentHealth: 0
 --- !u!4 &1598873186
 Transform:
   m_ObjectHideFlags: 0
@@ -811,7 +825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7bdd1e81c7be9442a123f234061ec16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newMax: 0
+  newMaxSize: 0
   maxSize: 0
   currentSize: 0
   snake: {fileID: 1880385378512152, guid: a6bc769eda8f3184d94e90db9cba573f, type: 2}
@@ -820,6 +834,8 @@ MonoBehaviour:
   snakeFood: {fileID: 1598873188}
   direction: 
   newPos: {x: 0, y: 0}
+  speedTimerCountdown: 0
+  speedResetCountdown: 0
 --- !u!114 &1598873188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -831,11 +847,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9647edd1bf3348c42b01505e82537ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  food: {fileID: 1465749904668054, guid: 2b0a97c517def5a4ea86417af18e0e69, type: 2}
+  currentFood: {fileID: 0}
+  snake: {fileID: 1979667146}
   xSpawn: 10
   ySpawn: 15
   score: 0
-  food: {fileID: 1465749904668054, guid: 2b0a97c517def5a4ea86417af18e0e69, type: 2}
-  currentFood: {fileID: 0}
+  snakeHealth: {fileID: 1598873185}
   scoreText: {fileID: 2140693880}
 --- !u!1 &1685114594
 GameObject:
@@ -1184,6 +1202,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1979667146 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1880385378512152, guid: a6bc769eda8f3184d94e90db9cba573f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1305592673}
 --- !u!114 &2060351133 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114606929298227712, guid: a6bc769eda8f3184d94e90db9cba573f,

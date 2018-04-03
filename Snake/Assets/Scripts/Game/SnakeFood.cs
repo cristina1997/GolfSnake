@@ -6,16 +6,19 @@ using UnityEngine.SceneManagement;
 
 // Code adapted from https://www.youtube.com/watch?v=Sau81jWbGRY&index=5&list=PLWeGoBm1YHVhc51TYY7fTLNbA02qkyLrA&ab_channel=InfoGamer
 public class SnakeFood : MonoBehaviour {
+    public GameObject food, currentFood;
+    public SnakeHealth snakeHealth;
+    public const float speedTimeInit = 90f, healthyFoodTimeInit = 300f;
+    public const int healthy = 2, unhealthy = -5;
+ 
     public int xSpawn, ySpawn;
     public static int foodEaten;
-    public int score;
-    public const int speedTimeInit = 90, healthyFoodTimeInit = 300;
-    public static int healthyFood, speedUpFood;
-    public static bool isFaster, isHealthy;
-
-    public GameObject food, currentFood;
     public Text scoreText;
-    
+    public int score;
+
+    public static int speedUpFood, healthyFood;
+    public static bool isFaster, isHealthy;    
+    public static bool isDead;
 
     private void OnEnable()
     {
@@ -29,28 +32,30 @@ public class SnakeFood : MonoBehaviour {
 
     private void Start()
     {
+        snakeHealth = GetComponent<SnakeHealth>();
         CreateFood();
         foodEaten = 0;
         speedUpFood = 0;
         healthyFood = 0;
-
     }
 
     private void Update()
     {
         Speed();
-        Health();
-        
+        Health();        
     }
 
     private void Speed()
     {
+        // Countdown from 1.5 minutes
         float foodSpeedCountDown = speedTimeInit;
         foodSpeedCountDown -= Time.time;
 
         if (foodSpeedCountDown < 0 || (foodSpeedCountDown >= 0 && speedUpFood <= 3))
         {
-            
+
+            // If the snake picks up more than 3 food objects in the space of 1.5 minutes the snake is said to be faster - isFaster = true
+            // Otherwise - isFaster = false
             if (speedUpFood >= 3)
             {
                 isFaster = true;                
@@ -62,6 +67,7 @@ public class SnakeFood : MonoBehaviour {
                 isFaster = false;
             }
 
+            // The countdown of the timer during which the snake can eat enough food to increase its speed is reset to its original value
             foodSpeedCountDown = speedTimeInit;
         }
 
@@ -72,29 +78,51 @@ public class SnakeFood : MonoBehaviour {
 
     }
 
+    float healthCountDown = healthyFoodTimeInit;
     private void Health()
     {
-        float healtChountDown = healthyFoodTimeInit;
-        healtChountDown -= Time.time;
+        // Countdown from 5 minutes
+        healthCountDown -= Time.deltaTime;
 
-        if (healtChountDown < 0 || (healtChountDown >= 0 && healthyFood <= 10))
+        if (healthCountDown < 0)
         {
-            if (healthyFood >= 10)
-            {
-                isHealthy = true;
-                healthyFood = 0;
-            }
-            else if (healthyFood < 10)
-            {
-                isHealthy = false;
-            }
-            
-            healtChountDown = healthyFoodTimeInit;
+            VerifyHealth();            
+
+            // The countdown of the timer during which the snake can eat enough food to keep himself alive is reset to its original value
+            healthCountDown = healthyFoodTimeInit;
         }
+
         /*
         Debug.Log("isHealthy: " + isHealthy);
         Debug.Log("speedUpFood: " + speedUpFood);
-        Debug.Log("healtChountDown: " + healtChountDown);*/
+        Debug.Log("healthCountDown: " + healthCountDown);*/
+
+    } // Health
+
+    private void VerifyHealth()
+    {
+        // If the snake picks up more than 10 food objects in the space of 5 minutes the snake is said to be healthy - isHealthy = true
+        // Otherwise - isHealthy = false
+        if (healthyFood >= 10)
+        {
+            isHealthy = true;
+            healthyFood = 0;
+        }
+        else if (healthyFood < 10)
+        {
+            isHealthy = false;
+        }
+
+        // If the snake is healthy then the HP increases by 2
+        // Otherwise it decreases by 5
+        if (isHealthy)
+        {
+            snakeHealth.HealthLoss(healthy);
+        }
+        else
+        {
+            snakeHealth.HealthLoss(unhealthy);
+        }
     }
 
     void CreateFood()
@@ -109,14 +137,14 @@ public class SnakeFood : MonoBehaviour {
 
     } // CreateFood
 
+    // If the game object is spawned within camera view it's set to fals. It is set back to true at the end of the first frame instantiated
+    // If the game object is spawned off view of our camera, it will always be false.
     IEnumerator CheckRenderer(GameObject inside)
     {
-        // Check if food is visible
-        // If food spawned within camera view it's set to false and is set to true at the end of the first frame instantiated
-        // If spawned off view of our camera it will always be false
-        yield return new WaitForEndOfFrame();                                                           // Waits until the end of the current frame and then execute code after it
+        // It waits until the end of the current frame and then executes code after it.    
+        yield return new WaitForEndOfFrame();                                                                   
 
-        // Check to see if game object passed into this function is visible
+        // Check to see if food is visible
         if (inside.GetComponent<Renderer>().isVisible == false)
         {
             // Make sure we have food object
@@ -135,11 +163,15 @@ public class SnakeFood : MonoBehaviour {
         {
             // Instantiate new food Object
             CreateFood();
-            foodEaten++;
-            speedUpFood++;
-            healthyFood++;
+
+            
+            foodEaten++;                                                                                    // Counts the amount of food eaten by the snake
+            speedUpFood++;                                                                                  // Counts the amount of food eaten by the snake that is needed for the snake to speed up
+            healthyFood++;                                                                                  // Counts the amount of food eaten by the snake that is needed for the snake to not lose health
+
             score += 10;
-            scoreText.text = score.ToString();
+            scoreText.text = score.ToString();                                                              // Outputs the score to the text field in the Score game object
+
             int temp = PlayerPrefs.GetInt("HighScore", 0);
 
             if (score > temp)
@@ -152,13 +184,9 @@ public class SnakeFood : MonoBehaviour {
         {
             // Prevents snake from moving any further
             CancelInvoke("Timer");
-            GameOver();
+            isDead = true;
         }
 
     } // Eat
 
-    public void GameOver()
-    {
-        SceneManager.LoadScene(2);
-    }
 }

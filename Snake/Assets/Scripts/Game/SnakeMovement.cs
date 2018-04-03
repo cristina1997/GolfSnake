@@ -16,32 +16,35 @@ public class SnakeMovement : MonoBehaviour {
     
     private void Start()
     {
+        InvokeRepeating("Timer", 0, startSpeedValue);
         speedTimerCountdown = startSpeedValue;
-
-        InvokeRepeating("Timer", 0, speedTimerCountdown);
         direction = "UP";
         currentSize = 1;
         maxSize = 2;
     }
     
+    // It calculates the amount by which the speed is increased
     public void SpeedCalculation()
     {
-       if (SnakeFood.healthyFood != 0)
-        {
-            speedTimerCountdown -= 0.05f;
-            CancelInvoke("Timer");
-            InvokeRepeating("Timer", 0, speedTimerCountdown);
-        }
-    }
 
+        // InvokeRepeating() - The speed is increased by decreasing the value of the last parameter in this method
+        // CancelInvoke() - It makes sure the snake's speed doesn't affect the smoothness of the snake's movement
+        speedTimerCountdown -= 0.05f;        
+        CancelInvoke("Timer");                                                                                     
+        InvokeRepeating("Timer", 0, speedTimerCountdown);
+
+    } // SpeedCalculation
+
+    // It resets the snake's speed to its starting value every 5 minutes 
     public void SpeedReset()
     {        
-
+        // Countdown from 5 minutes
         float speedResetCountdown = speedResetInit;
         speedResetCountdown -= Time.time;
-                
+
+        // After the 5 minutes run both, the snake's speed and the 5 minute countdown that ran out are reset to their original values
         if (speedResetCountdown < 0)
-        {
+        {            
             speedResetCountdown = speedResetInit;
             speedTimerCountdown = startSpeedValue;
         }
@@ -56,6 +59,8 @@ public class SnakeMovement : MonoBehaviour {
         newMaxSize = SnakeFood.foodEaten;
         newMaxSize += maxSize;
 
+        // The speed is only calculated if the snake is set to be faster - isFaster = true
+        // And if the speed does not go below 0.03f - if it's too low the snake will go too fast
         if (SnakeFood.isFaster && speedTimerCountdown >= 0.3f)
         {
             SpeedCalculation();

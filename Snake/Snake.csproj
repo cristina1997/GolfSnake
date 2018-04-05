@@ -296,6 +296,7 @@
     <Compile Include="Assets\Scripts\Game\SnakeHealth.cs" />
     <Compile Include="Assets\Scripts\Game\SnakeMovement.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenuControl.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\ObstacleSpawn.cs" />
     <Compile Include="Assets\Scripts\Pause\PauseMenuControl.cs" />
     <Compile Include="Assets\Scripts\Pause\ShowPauseMenu.cs" />
   </ItemGroup>

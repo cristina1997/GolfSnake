@@ -90,6 +90,7 @@ public class SnakeMovement : MonoBehaviour {
     {
         GameObject temp;
         newPos = head.transform.position;   // set to the current position of our head object
+
         RotateSnake();
 
         switch (direction)

@@ -5,24 +5,25 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 // Code adapted from https://www.youtube.com/watch?v=Sau81jWbGRY&index=5&list=PLWeGoBm1YHVhc51TYY7fTLNbA02qkyLrA&ab_channel=InfoGamer
-public class SnakeFood : MonoBehaviour {
+public class SnakeFood : MonoBehaviour
+{
     public GameObject food, currentFood;
     public SnakeHealth snakeHealth;
     public const float speedTimeInit = 90f, healthyFoodTimeInit = 300f;
     public const int healthy = 2, unhealthy = -5;
- 
+
     public int xSpawn, ySpawn;
     public static int foodEaten;
     public Text scoreText;
-    public int score;
+    public int score, temp;
 
     public static int speedUpFood, healthyFood;
-    public static bool isFaster, isHealthy;    
+    public static bool isFaster, isHealthy;
     public static bool isDead;
 
     private void OnEnable()
     {
-        Snake.eat += Eat;    
+        Snake.eat += Eat;
     }
 
     private void OnDisable()
@@ -60,7 +61,7 @@ public class SnakeFood : MonoBehaviour {
             // Otherwise - isFaster = false
             if (speedUpFood >= 3)
             {
-                isFaster = true;                
+                isFaster = true;
                 speedUpFood = 0;
 
             }
@@ -88,7 +89,7 @@ public class SnakeFood : MonoBehaviour {
 
         if (healthCountDown < 0)
         {
-            VerifyHealth();            
+            VerifyHealth();
 
             // The countdown of the timer during which the snake can eat enough food to keep himself alive is reset to its original value
             healthCountDown = healthyFoodTimeInit;
@@ -144,13 +145,13 @@ public class SnakeFood : MonoBehaviour {
     IEnumerator CheckRenderer(GameObject inside)
     {
         // It waits until the end of the current frame and then executes code after it.    
-        yield return new WaitForEndOfFrame();                                                                   
+        yield return new WaitForEndOfFrame();
 
         // Check to see if food is visible
         if (inside.GetComponent<Renderer>().isVisible == false)
         {
             // Make sure we have food object
-            if (inside.tag == "Food")
+            if (inside.tag == "Food" || inside.tag == "HealthBar")
             {
                 Destroy(inside);
                 CreateFood();
@@ -160,13 +161,20 @@ public class SnakeFood : MonoBehaviour {
 
     void Eat(string eatenObject)
     {
+
+        if (Input.GetKey("x"))
+        {
+            temp = 0;
+            score = 0;
+        }
+
         // Make sure eatenObejct received from Snake is the food
         if (eatenObject == "Food")
         {
             // Instantiate new food Object
             CreateFood();
 
-            
+
             foodEaten++;                                                                                    // Counts the amount of food eaten by the snake
             speedUpFood++;                                                                                  // Counts the amount of food eaten by the snake that is needed for the snake to speed up
             healthyFood++;                                                                                  // Counts the amount of food eaten by the snake that is needed for the snake to not lose health
@@ -174,15 +182,13 @@ public class SnakeFood : MonoBehaviour {
             score += 10;
             scoreText.text = score.ToString();                                                              // Outputs the score to the text field in the Score game object
 
-            int temp = PlayerPrefs.GetInt("HighScore");
+            temp = PlayerPrefs.GetInt("HighScore");
 
             if (score > temp)
             {
                 PlayerPrefs.SetInt("HighScore", score);
             } // if
         } // if
-
-        if ()
 
         if (eatenObject == "Snake")
         {

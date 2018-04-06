@@ -20,7 +20,8 @@ public class BlackHoles : MonoBehaviour
         if (snake.gameObject.CompareTag("Snake"))
         {
             // ... the player is in range.
-            snakeInRange = true;            
+            snakeInRange = true;
+            
         } // if
         VerifyHit();
     } // OnTriggerEnter2D

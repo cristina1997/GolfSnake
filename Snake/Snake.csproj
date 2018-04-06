@@ -289,9 +289,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\FoodCollision.cs" />
     <Compile Include="Assets\Scripts\Game Over\GameOverControl.cs" />
-    <Compile Include="Assets\Scripts\Game Over\GameOverManager.cs" />
     <Compile Include="Assets\Scripts\Game\Snake.cs" />
     <Compile Include="Assets\Scripts\Game\SnakeFood.cs" />
     <Compile Include="Assets\Scripts\Game\SnakeHealth.cs" />

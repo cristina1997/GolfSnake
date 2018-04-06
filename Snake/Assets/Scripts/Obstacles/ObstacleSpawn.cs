@@ -3,23 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ObstacleSpawn : MonoBehaviour {
+    public static bool objectInRange;
     public const int maxBlackHoles = 8;
     public GameObject blackHole, newBlackHole;           
     public Vector3 center, size;
     public int xSpawn, ySpawn;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
         // InvokeRepeating("Spawn", 0, 0);
         CreateObstacle();
+    }
 
-    }
-	
-	// Update is called once per frame
-	void Update () {
-      
-    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        bool isCollided = Collision(other);
+
+        // If the entering collider is the player...
+        if (isCollided)
+        {
+            // ... the player is in range.
+            objectInRange = true;
+        } // if
+    } // OnTriggerEnter
+
+    public bool Collision(Collider2D other)
+    {
+        bool isCollided = false;
+
+        if (other.gameObject.CompareTag("Snake") || other.gameObject.CompareTag("Food") || other.gameObject.CompareTag("BlackHole"))
+        {            
+            isCollided = true;            
+        } // if
+
+        return isCollided;
+    } // Collision
 
     void CreateObstacle()
     {
@@ -31,11 +51,11 @@ public class ObstacleSpawn : MonoBehaviour {
 
             // Instantiate black hole object
             newBlackHole = (GameObject)Instantiate(blackHole, new Vector2(xTemp, yTemp), transform.rotation);
-            // StartCoroutine(CheckRenderer(newBlackHole));
+            StartCoroutine(CheckRenderer(newBlackHole));
           
         } // for
-        
-    } // CreateFood
+
+    } // CreateObstacle
 
     // If the game object is spawned within camera view it's set to falsee. It is set back to true at the end of the first frame instantiated
     // If the game object is spawned off view of our camera, it will always be false.
@@ -45,22 +65,19 @@ public class ObstacleSpawn : MonoBehaviour {
         // It waits until the end of the current frame and then executes code after it.    
         yield return new WaitForEndOfFrame();
 
-        // Check to see if black object is visible
+        // Check to see if game object is visible
         if (inside.GetComponent<Renderer>().isVisible == false)
         {
-            Debug.Log("Hi");
-    
-            // Make sure we have food object
+   
             // If the black hole collides with the food, the snake or another black hole then it is destroyed and another one is created in it splace
+            if (objectInRange)
+            {
+                Destroy(inside);
+                CreateObstacle();
+            } // if
 
         } //  if
 
-    }
+    } // CheckRenderer
 
-    /* void OnDrawGizmosSelected()
-     {
-          Gizmos.color = new Color(1, 0, 0, 0.5f);
-          Gizmos.DrawCube(center);
-      }*/
-}
-                                                                                                                                                                                                                              
+} // ObstacleSpawn

@@ -11,6 +11,7 @@ public class MainMenuControl : MonoBehaviour {
 	void Start ()
     {
         HighScore();
+        // highScore.text = PlayerPrefs.GetInt("HighScore", 0).ToString();
 
     }
 
@@ -22,17 +23,18 @@ public class MainMenuControl : MonoBehaviour {
         }
 
         SceneManager.LoadScene(1);
-    }
+    } // Play
 
     void HighScore()
     {
         highScore.text = PlayerPrefs.GetInt("HighScore").ToString();
-    }
+
+    } // HighScore
 
     public void Quit()
     {
 
         Application.Quit();
-    }
+    } // Quit
 
-}
+} // MainMenuControl

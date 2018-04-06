@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Code adapted from https://www.youtube.com/watch?v=Sau81jWbGRY&index=5&list=PLWeGoBm1YHVhc51TYY7fTLNbA02qkyLrA&ab_channel=InfoGamer
-public class SnakeMovement : MonoBehaviour {
+public class SnakeMovement : MonoBehaviour
+{
     public int newMaxSize, maxSize, currentSize;
     public GameObject snake;
     public Snake head, tail;
     public SnakeFood snakeFood;
     public string direction;
     public Vector2 newPos;
-    private Quaternion rotation;
     public const float speedTimerInit = 0.05f, speedResetInit = 300f, startSpeedValue = 0.5f;
     public float speedTimerCountdown, speedResetCountdown;
-    
+
     private void Start()
     {
         InvokeRepeating("Timer", 0, startSpeedValue);
@@ -22,33 +22,33 @@ public class SnakeMovement : MonoBehaviour {
         currentSize = 1;
         maxSize = 2;
     }
-    
+
     // It calculates the amount by which the speed is increased
     public void SpeedCalculation()
     {
 
         // InvokeRepeating() - The speed is increased by decreasing the value of the last parameter in this method
         // CancelInvoke() - It makes sure the snake's speed doesn't affect the smoothness of the snake's movement
-        speedTimerCountdown -= 0.05f;        
-        CancelInvoke("Timer");                                                                                     
+        speedTimerCountdown -= 0.05f;
+        CancelInvoke("Timer");
         InvokeRepeating("Timer", 0, speedTimerCountdown);
 
     } // SpeedCalculation
 
     // It resets the snake's speed to its starting value every 5 minutes 
     public void SpeedReset()
-    {        
+    {
         // Countdown from 5 minutes
         float speedResetCountdown = speedResetInit;
         speedResetCountdown -= Time.time;
 
         // After the 5 minutes run both, the snake's speed and the 5 minute countdown that ran out are reset to their original values
         if (speedResetCountdown < 0)
-        {            
+        {
             speedResetCountdown = speedResetInit;
             speedTimerCountdown = startSpeedValue;
-        }
-    }
+        } // if
+    } // SpeedReset
 
     private void Update()
     {
@@ -64,14 +64,14 @@ public class SnakeMovement : MonoBehaviour {
         if (SnakeFood.isFaster && speedTimerCountdown >= 0.3f)
         {
             SpeedCalculation();
-        }
+        } // if
     }
 
     void Timer()
     {
         Movement();
         StartCoroutine(CheckVisible());
-                
+
         // Keeps the snake from growing any longer if it's at its maximum size 
 
         if (currentSize >= newMaxSize)
@@ -81,8 +81,8 @@ public class SnakeMovement : MonoBehaviour {
         // The snake grows to be at its maxSize if the maxSize is bigger
         else
         {
-            currentSize++;            
-        }
+            currentSize++;
+        } // if...else if
 
     } // Timer
 
@@ -90,8 +90,6 @@ public class SnakeMovement : MonoBehaviour {
     {
         GameObject temp;
         newPos = head.transform.position;   // set to the current position of our head object
-
-        RotateSnake();
 
         switch (direction)
         {
@@ -107,10 +105,9 @@ public class SnakeMovement : MonoBehaviour {
             case "LEFT":
                 newPos = new Vector2(newPos.x - 1, newPos.y);
                 break;
+        } // switch
 
-        }
-
-        temp = (GameObject)Instantiate(snake, newPos, rotation/*transform.rotation*/);                                  //
+        temp = (GameObject)Instantiate(snake, newPos, transform.rotation);                                  // it sets the new position for the snake - movement
         head.setNext(temp.GetComponent<Snake>());                                                           // set the next variable of our current head to the new instantiated object
         head = temp.GetComponent<Snake>();                                                                  // reset the current head to the temp object 
 
@@ -123,17 +120,6 @@ public class SnakeMovement : MonoBehaviour {
         tempTail.RemoveTail();
     } // UpdateTail
 
-    private void RotateSnake()
-    {
-        if (direction == "UP" || direction == "DOWN")
-        {
-            rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-        }
-        else if (direction == "LEFT" || direction == "RIGHT")
-        {
-            rotation = Quaternion.Euler(new Vector3(0, 0, 90));
-        }
-    } // RotateSnake
 
     void PreventBackwardMovement()
     {
@@ -153,7 +139,8 @@ public class SnakeMovement : MonoBehaviour {
         if (direction != "RIGHT" && Input.GetKey("left"))
         {
             direction = "LEFT";
-        }
+        } // if...else if
+
     } // PreventBackwardMovement
 
     void Wrap()
@@ -186,7 +173,7 @@ public class SnakeMovement : MonoBehaviour {
                 // x position decremented by 1 - positive and then flips it
                 head.transform.position = new Vector2(-(head.transform.position.x + 1), head.transform.position.y);
                 break;
-        }
+        } // switch
     } // Wrap
 
     IEnumerator CheckVisible()
@@ -198,8 +185,8 @@ public class SnakeMovement : MonoBehaviour {
         if (!head.GetComponent<Renderer>().isVisible)
         {
             Wrap();
-        }
+        } // if
 
     } // CheckRenderer
 
-}
+} // SnakeMovement

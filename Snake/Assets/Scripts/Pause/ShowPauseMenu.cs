@@ -22,11 +22,11 @@ public class ShowPauseMenu : MonoBehaviour {
             else
             {
                 Time.timeScale = 1;
-            }
-            
+            } // if...else if
+
             pauseMenu.SetActive(isShowing);
 
-        }
+        } // if
 
     }
 
@@ -38,5 +38,5 @@ public class ShowPauseMenu : MonoBehaviour {
         // Time set to 0 - game unpaused
         Time.timeScale = 1;
 
-    }
-}
+    } // UnPause
+} // ShowPauseMenu

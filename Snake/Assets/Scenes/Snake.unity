@@ -597,8 +597,8 @@ MonoBehaviour:
   newBlackHole: {fileID: 0}
   center: {x: 0, y: 0, z: 0}
   size: {x: 0, y: 0, z: 0}
-  xSpawn: 20
-  ySpawn: 30
+  xSpawn: 15
+  ySpawn: 20
 --- !u!1 &1001551897
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,14 +811,6 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4659545594011132, guid: 19e3cc861ed4890408016688922636ff, type: 2}
       propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1247891200835216, guid: 19e3cc861ed4890408016688922636ff, type: 2}
-      propertyPath: m_Name
-      value: Snake
-      objectReference: {fileID: 0}
-    - target: {fileID: 1247891200835216, guid: 19e3cc861ed4890408016688922636ff, type: 2}
-      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

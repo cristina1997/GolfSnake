@@ -289,6 +289,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\FoodCollision.cs" />
     <Compile Include="Assets\Scripts\Game Over\GameOverControl.cs" />
     <Compile Include="Assets\Scripts\Game Over\GameOverManager.cs" />
     <Compile Include="Assets\Scripts\Game\Snake.cs" />
@@ -296,6 +297,7 @@
     <Compile Include="Assets\Scripts\Game\SnakeHealth.cs" />
     <Compile Include="Assets\Scripts\Game\SnakeMovement.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenuControl.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\BlackHoles.cs" />
     <Compile Include="Assets\Scripts\Obstacles\ObstacleSpawn.cs" />
     <Compile Include="Assets\Scripts\Pause\PauseMenuControl.cs" />
     <Compile Include="Assets\Scripts\Pause\ShowPauseMenu.cs" />

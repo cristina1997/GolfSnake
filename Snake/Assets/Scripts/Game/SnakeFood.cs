@@ -32,6 +32,7 @@ public class SnakeFood : MonoBehaviour {
 
     private void Start()
     {
+        PlayerPrefs.SetInt("HighScore", 0);
         snakeHealth = GetComponent<SnakeHealth>();
         CreateFood();
         foodEaten = 0;
@@ -42,7 +43,8 @@ public class SnakeFood : MonoBehaviour {
     private void Update()
     {
         Speed();
-        Health();        
+        Health();
+
     }
 
     private void Speed()
@@ -65,11 +67,11 @@ public class SnakeFood : MonoBehaviour {
             else if (speedUpFood < 3)
             {
                 isFaster = false;
-            }
+            } // if...else if
 
             // The countdown of the timer during which the snake can eat enough food to increase its speed is reset to its original value
             foodSpeedCountDown = speedTimeInit;
-        }
+        } // if
 
         /*
         Debug.Log("isFaster: " + isFaster);
@@ -90,7 +92,7 @@ public class SnakeFood : MonoBehaviour {
 
             // The countdown of the timer during which the snake can eat enough food to keep himself alive is reset to its original value
             healthCountDown = healthyFoodTimeInit;
-        }
+        } // if
 
         /*
         Debug.Log("isHealthy: " + isHealthy);
@@ -111,7 +113,7 @@ public class SnakeFood : MonoBehaviour {
         else if (healthyFood < 10)
         {
             isHealthy = false;
-        }
+        } // if...else if
 
         // If the snake is healthy then the HP increases by 2
         // Otherwise it decreases by 5
@@ -122,8 +124,8 @@ public class SnakeFood : MonoBehaviour {
         else
         {
             snakeHealth.HealthLoss(unhealthy);
-        }
-    }
+        } // if...else if
+    } // VerifyHealth
 
     void CreateFood()
     {
@@ -132,7 +134,7 @@ public class SnakeFood : MonoBehaviour {
         int yTemp = Random.Range(-ySpawn, ySpawn);
 
         // Instantiate food object
-        currentFood = (GameObject)Instantiate(food, new Vector2(xTemp, yTemp), Quaternion.Euler(new Vector3(90, 0, 0)));
+        currentFood = (GameObject)Instantiate(food, new Vector2(xTemp, yTemp), Quaternion.Euler(new Vector2(0, 0)));
         StartCoroutine(CheckRenderer(currentFood));
 
     } // CreateFood
@@ -152,8 +154,8 @@ public class SnakeFood : MonoBehaviour {
             {
                 Destroy(inside);
                 CreateFood();
-            }
-        }
+            } // if
+        } // if
     } // CheckRenderer
 
     void Eat(string eatenObject)
@@ -172,13 +174,15 @@ public class SnakeFood : MonoBehaviour {
             score += 10;
             scoreText.text = score.ToString();                                                              // Outputs the score to the text field in the Score game object
 
-            int temp = PlayerPrefs.GetInt("HighScore", 0);
+            int temp = PlayerPrefs.GetInt("HighScore");
 
             if (score > temp)
             {
                 PlayerPrefs.SetInt("HighScore", score);
-            }
-        }
+            } // if
+        } // if
+
+        if ()
 
         if (eatenObject == "Snake")
         {
@@ -189,4 +193,4 @@ public class SnakeFood : MonoBehaviour {
 
     } // Eat
 
-}
+} // SnakeFood

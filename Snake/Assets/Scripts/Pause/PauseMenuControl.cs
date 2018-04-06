@@ -10,6 +10,7 @@ public class PauseMenuControl : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        // highScore.text = PlayerPrefs.GetInt("HighScore", 0).ToString();
         HighScore();
 
     }
@@ -18,16 +19,16 @@ public class PauseMenuControl : MonoBehaviour {
     {
 
         SceneManager.LoadScene(0);
-    }
+    } // Menu
 
     void HighScore()
     {
-        highScore.text = PlayerPrefs.GetInt("HighScore").ToString();	
-	}
+        highScore.text = PlayerPrefs.GetInt("HighScore").ToString();
+    } // HighScore
 
     public void Quit()
     {
 
         Application.Quit();
-    }
-}
+    } // Quit
+} // PauseMenuControl

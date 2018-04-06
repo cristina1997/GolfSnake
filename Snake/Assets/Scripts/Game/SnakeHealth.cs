@@ -18,25 +18,28 @@ public class SnakeHealth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         if (SnakeFood.isDead || currentHealth == 0)
         {
+            currentHealth = maxHealth;
             SnakeFood.isDead = false;
             GameOver();
-        }   
+        } // if
 	}
 
     public void HealthLoss(int amount)
     {
-        if (!(currentHealth + amount > maxHealth))
-        {
+        
+        if (!(currentHealth + amount > maxHealth))  
+        {           
             currentHealth += amount;
-        }
+        } // if
 
-    }
+    } // HealthLoss
 
     public void GameOver()
     {
         SceneManager.LoadScene(2);
         
     } // GameOver
-}
+} // SnakeHealth

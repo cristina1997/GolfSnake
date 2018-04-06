@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Code adapted from https://www.youtube.com/watch?v=Sau81jWbGRY&index=5&list=PLWeGoBm1YHVhc51TYY7fTLNbA02qkyLrA&ab_channel=InfoGamer
 public class SnakeMovement : MonoBehaviour
@@ -9,13 +10,18 @@ public class SnakeMovement : MonoBehaviour
     public GameObject snake;
     public Snake head, tail;
     public SnakeFood snakeFood;
-    public string direction;
     public Vector2 newPos;
+    public Text speedDisplay;
+    public Slider speedSlider;
+    public int outputDisplaySpeed;
+    public string direction;
     public const float speedTimerInit = 0.05f, speedResetInit = 300f, startSpeedValue = 0.5f;
     public float speedTimerCountdown, speedResetCountdown;
 
     private void Start()
     {
+        speedDisplay = GameObject.Find("SpeedText").GetComponent<Text>();
+        speedSlider = GameObject.Find("SpeedUI").GetComponent<Slider>();
         InvokeRepeating("Timer", 0, startSpeedValue);
         speedTimerCountdown = startSpeedValue;
         direction = "UP";
@@ -29,6 +35,7 @@ public class SnakeMovement : MonoBehaviour
 
         // InvokeRepeating() - The speed is increased by decreasing the value of the last parameter in this method
         // CancelInvoke() - It makes sure the snake's speed doesn't affect the smoothness of the snake's movement
+        outputDisplaySpeed += 20;
         speedTimerCountdown -= 0.05f;
         CancelInvoke("Timer");
         InvokeRepeating("Timer", 0, speedTimerCountdown);
@@ -47,13 +54,16 @@ public class SnakeMovement : MonoBehaviour
         {
             speedResetCountdown = speedResetInit;
             speedTimerCountdown = startSpeedValue;
+            outputDisplaySpeed = 0;
         } // if
     } // SpeedReset
 
     private void Update()
     {
         PreventBackwardMovement();
-        SpeedReset();
+        SpeedReset();        
+        speedDisplay.text = "Speed: " + outputDisplaySpeed;
+        speedSlider.value = outputDisplaySpeed;
 
         // Calculates the new maximum size of the snake
         newMaxSize = SnakeFood.foodEaten;
@@ -61,7 +71,7 @@ public class SnakeMovement : MonoBehaviour
 
         // The speed is only calculated if the snake is set to be faster - isFaster = true
         // And if the speed does not go below 0.03f - if it's too low the snake will go too fast
-        if (SnakeFood.isFaster && speedTimerCountdown >= 0.3f)
+        if (SnakeFood.isFaster && speedTimerCountdown >= 0.25f)
         {
             SpeedCalculation();
         } // if

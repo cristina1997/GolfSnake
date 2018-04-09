@@ -1,9 +1,13 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Code adapted from https://www.youtube.com/watch?v=Sau81jWbGRY&index=5&list=PLWeGoBm1YHVhc51TYY7fTLNbA02qkyLrA&ab_channel=InfoGamer
+// Code adapted from:
+//      - https://www.youtube.com/watch?v=Sau81jWbGRY&index=5&list=PLWeGoBm1YHVhc51TYY7fTLNbA02qkyLrA&ab_channel=InfoGamer
+//      - https://unity3d.com/learn/tutorials/projects/2d-roguelike-tutorial/adding-mobile-controls
+
 public class SnakeMovement : MonoBehaviour
 {
     public int newMaxSize, maxSize, currentSize;
@@ -17,7 +21,8 @@ public class SnakeMovement : MonoBehaviour
     public string direction;
     public const float speedTimerInit = 0.05f, speedResetInit = 300f, startSpeedValue = 0.5f;
     public float speedTimerCountdown, speedResetCountdown;
-
+   // private Vector2 touchOrigin = -Vector2.one;                                 
+    // public int horizontal, vertical;
     private void Start()
     {
         speedDisplay = GameObject.Find("SpeedText").GetComponent<Text>();
@@ -60,7 +65,9 @@ public class SnakeMovement : MonoBehaviour
 
     private void Update()
     {
-        PreventBackwardMovement();
+
+        ChangeDirectionPC();
+       // ChangeDirectionMob();
         SpeedReset();        
         speedDisplay.text = "Speed: " + outputDisplaySpeed;
         speedSlider.value = outputDisplaySpeed;
@@ -101,6 +108,7 @@ public class SnakeMovement : MonoBehaviour
         GameObject temp;
         newPos = head.transform.position;   // set to the current position of our head object
 
+        // The snake moves in the direction set by adding a 1 to the position it is moving towards
         switch (direction)
         {
             case "UP":
@@ -131,9 +139,9 @@ public class SnakeMovement : MonoBehaviour
     } // UpdateTail
 
 
-    void PreventBackwardMovement()
+    public void ChangeDirectionPC()
     {
-        // It prevents the snake from going backwards
+        // It prevents the snake from going backwards on the pc and changes the direction of the snake in accordance to the arrow keys on the keyboard
         if (direction != "DOWN" && Input.GetKey("up"))
         {
             direction = "UP";
@@ -151,7 +159,101 @@ public class SnakeMovement : MonoBehaviour
             direction = "LEFT";
         } // if...else if
 
-    } // PreventBackwardMovement
+    } // ChangeDirectionPC
+
+    public void ChangeDirectionMobile(string dir)
+    {
+
+        // It prevents the snake from going backwards on the pc and changes the direction of the snake in accordance to the arrow buttons on the touchpad
+        if (direction != "DOWN" && dir == "UP")
+        {
+            direction = dir;
+        }
+        if (direction != "UP" && dir == "DOWN")
+        {
+            direction = dir;
+        }
+        if (direction != "LEFT" && dir == "RIGHT")
+        {
+            direction = dir;
+        }
+        if (direction != "RIGHT" && dir == "LEFT")
+        {
+            direction = dir;
+        } // if...else if
+
+    } // ChangeDirectionMobile
+
+    /*public void ChangeDirectionMob()
+    {
+        horizontal = 0;
+        vertical = 0;
+
+        // Check if we are running on Windows Phone 10
+        #if UNITY_WEBPLAYERUNITY_WIN10
+
+            // Check if Input has registered more than zero touches
+            if (Input.touchCount > 0)
+            {
+
+                // Store the first touch detected
+                Touch myTouch = Input.touches[0];
+                
+                // Check if the phase of that touch Began
+                if (myTouch.phase == TouchPhase.Began)
+                {
+                    // If so, set touchOrigin to the position of that touch
+                    touchOrigin = myTouch.position;
+                } // If the touch phase did not begin but Ended instead and the x of touchOrigin is greater or equal to zero:
+                else if (myTouch.phase == TouchPhase.Ended && touchOrigin.x >= 0)
+                {
+                    
+                    // If the touch phase is not Began, and instead is equal to Ended and the x of touchOrigin is greater or equal to zero:
+                    Vector2 = touchEnd = myTouch.position;
+
+                    // Calculate the difference between the beginning and end of the touch on the x axis.
+                    float x = touchEnd.x - touchOrigin.x;
+
+                    // Calculate the difference between the beginning and end of the touch on the y axis.            
+                    float y = touchEnd.y - touchOrigin.y;
+
+                    // Set touchOrigin.x to -1 so that our else if statement will evaluate false and not repeat immediately.
+                    touchOrigin.x = -1;
+
+                    // Check if the difference along the x axis is greater than the difference along the y axis.        
+                    if (Mathf.Abs(x) > Mathf.Abs(y))
+                        // If x is greater than zero, set horizontal to 1
+                        // Otherwise set it to -1    
+                        horizontal = x > 0 ? 1 : -1;
+                    else
+                        // If y is greater than zero, set horizontal to 1
+                        // Otherwise set it to -1
+                        vertical = y > 0 ? 1 : -1;
+                } // if...else if
+            } // if
+    #endif
+        if (horizontal != 0 || vertical != 0)
+        {
+            if (vertical > 0)
+            {
+                direction = "UP";
+            }
+            else if (vertical < 0)
+            {
+                direction = "DOWN";
+            }
+            else if (horizontal > 0)
+            {
+                direction = "RIGHT";
+            }
+            else if (horizontal < 0)
+            {
+                direction = "LEFT";
+            } // if...else if
+        } // if
+
+    } // ChangeDirectionMob
+    */
 
     void Wrap()
     {

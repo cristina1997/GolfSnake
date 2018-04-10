@@ -20,7 +20,7 @@ When the snake eats itself, it dies and you have to restart the game.
 ***
 
 ## Controls
-### Windows PC
+### Windows 10 PC
 
 * Use keyboard arrow keys to move the snake
 * Use arrow keys visible in the game to move the snake
@@ -29,7 +29,7 @@ When the snake eats itself, it dies and you have to restart the game.
 * You can delete the score from all the menus available - pause menu, main menu or game over menu- if you wish
 * The high score is stored localy so if the game is deleted, so is the score
 
-### Windoes Mobile
+### Windows 10 Mobile
 
 * Use arrow keys visible in the game to move the snake
 * Use the touchscreen to swipe and move the snake

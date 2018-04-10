@@ -26,6 +26,7 @@ When the snake eats itself, it dies and you have to restart the game.
 * Use arrow keys visible in the game to move the snake
 * Use mouse to swipe on the game and move the snake
 * You can pause and unpause the game by pressing "p"
+![alt text](https://github.com/cristina1997/SnakeGame/blob/master/Snake/Assets/Sprites/Screenshots/PauseMenuScreenshot.PNG)
 * You can delete the score from all the menus available - pause menu, main menu or game over menu- if you wish
 * The high score is stored localy so if the game is deleted, so is the score
 

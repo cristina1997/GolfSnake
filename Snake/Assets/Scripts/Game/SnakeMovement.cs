@@ -5,8 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Code adapted from:
-//      - https://www.youtube.com/watch?v=Sau81jWbGRY&index=5&list=PLWeGoBm1YHVhc51TYY7fTLNbA02qkyLrA&ab_channel=InfoGamer
-//      - https://unity3d.com/learn/tutorials/projects/2d-roguelike-tutorial/adding-mobile-controls
+//      Sake Movement   - https://www.youtube.com/watch?v=Sau81jWbGRY&index=5&list=PLWeGoBm1YHVhc51TYY7fTLNbA02qkyLrA&ab_channel=InfoGamer
+//      Snake Swipe     - https://www.youtube.com/watch?v=rDK_3qXHAFg&ab_channel=N3KEN
 
 public class SnakeMovement : MonoBehaviour
 {
@@ -21,15 +21,15 @@ public class SnakeMovement : MonoBehaviour
     public string direction;
     public const float speedTimerInit = 0.05f, speedResetInit = 300f, startSpeedValue = 0.5f;
     public float speedTimerCountdown, speedResetCountdown;
-    //public bool tap, swipeLeft, swipeRight, swipeUp, swipeDown;
-    //private Vector2 startTouch, swipeDelta;
+    public bool tap, swipeLeft, swipeRight, swipeUp, swipeDown, isDragging;
+    private Vector2 startTouch, swipeDelta;
 
 
-    //public Vector2 SwipeDelta { get { return swipeDelta; } }
-    //public bool SwipeLeft { get { return swipeLeft; } }
-    //public bool SwipeRight { get { return swipeRight; } }
-    //public bool SwipeUp { get { return swipeUp; } }
-    //public bool SwipeDown { get { return swipeDown; } }
+    public Vector2 SwipeDelta { get { return swipeDelta; } }
+    public bool SwipeLeft { get { return swipeLeft; } }
+    public bool SwipeRight { get { return swipeRight; } }
+    public bool SwipeUp { get { return swipeUp; } }
+    public bool SwipeDown { get { return swipeDown; } }
 
 
     private void Start()
@@ -76,8 +76,8 @@ public class SnakeMovement : MonoBehaviour
     {
 
         ChangeDirectionPC();
-       // ChangeDirectionMob();
-        SpeedReset();        
+        Swipe();
+        SpeedReset();
         speedDisplay.text = "Speed: " + outputDisplaySpeed;
         speedSlider.value = outputDisplaySpeed;
 
@@ -151,19 +151,19 @@ public class SnakeMovement : MonoBehaviour
     public void ChangeDirectionPC()
     {
         // It prevents the snake from going backwards on the pc and changes the direction of the snake in accordance to the arrow keys on the keyboard
-        if (direction != "DOWN" && Input.GetKey("up"))
+        if (direction != "DOWN" && (Input.GetKey("up") || swipeUp))
         {
             direction = "UP";
         }
-        if (direction != "UP" && Input.GetKey("down"))
+        if (direction != "UP" && (Input.GetKey("down") || swipeDown))
         {
             direction = "DOWN";
         }
-        if (direction != "LEFT" && Input.GetKey("right"))
+        if (direction != "LEFT" && (Input.GetKey("right") || swipeRight))
         {
             direction = "RIGHT";
         }
-        if (direction != "RIGHT" && Input.GetKey("left"))
+        if (direction != "RIGHT" && (Input.GetKey("left") || swipeLeft))
         {
             direction = "LEFT";
         } // if...else if
@@ -193,15 +193,100 @@ public class SnakeMovement : MonoBehaviour
 
     } // ChangeDirectionMobile
 
-    //public void ChangeDirectionMob()
-    //{
-    //    tap = swipeLeft = swipeRight = swipeUp = swipeDown = false;
-    //}
+    public void Swipe()
+    {
+        // Reset the swipe every frame
+        tap = swipeLeft = swipeRight = swipeUp = swipeDown = false;
 
-    //private void Reset()
-    //{
-    //    startTouch = swipeDelta = Vector2.Zero
-    //}
+        // To test if it works on the pc with the mouse - it does
+        #region Sandalone Inputs
+        // If the left click on the mousee was pressed the swipe will work
+        // Otherwise it won't
+        if (Input.GetMouseButtonDown(0))
+        {
+            // If the screen was tapped the startTouch becomes the position of the mouse when clicked
+            tap = true;
+            isDragging = true;
+            startTouch = Input.mousePosition;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            // If the screen was not tapped the startTouch position is reset to its original position
+            isDragging = false;
+            Reset();
+        } // if...else if
+        #endregion
+
+        // Mobile
+        #region Mobile Inputs        
+        // Check if there are any touches on the screen at themoment
+        if (Input.touches.Length > 0)
+        {
+            // If we have at least 1 touch on the screen
+            if (Input.touches[0].phase == TouchPhase.Began)
+            {
+                // If the screen was tapped the startTouch becomes the position of the place where the touchscreeen was tapped
+                tap = true;
+                isDragging = true;
+                startTouch = Input.touches[0].position;
+            }
+            else if (Input.touches[0].phase == TouchPhase.Ended || Input.touches[0].phase == TouchPhase.Canceled)
+            {
+                // If the screen was not tapped the startTouch position is reset to its original position
+                isDragging = false;
+                Reset();
+            } // if...else if
+        } // if
+        #endregion
+
+        // Reset the distance to be able to  calculate it
+        swipeDelta = Vector2.zero;
+        // If there is a swipe calculatethe distance
+        if (isDragging)
+        {
+            // If there is a swipe on either the mobile or the computer then get the distance
+            if (Input.touches.Length > 0)
+                swipeDelta = Input.touches[0].position - startTouch;
+            else if (Input.GetMouseButton(0))
+                swipeDelta = (Vector2)Input.mousePosition - startTouch;
+        } // if
+
+        // Did we cross the deadzone?
+        if (swipeDelta.magnitude > 150)
+        {
+
+            float x = swipeDelta.x;
+            float y = swipeDelta.y;
+
+            // Calculate the direction of the swipe
+            if (Mathf.Abs(x) > Mathf.Abs(y))
+            {
+                // x-axis - left or right
+                if (x < 0)
+                    swipeLeft = true;
+                else
+                    swipeRight = true;
+            }
+            else
+            {
+                // y-axis - up or down
+                if (y < 0)
+                    swipeDown = true;
+                else
+                    swipeUp = true;
+            } // if...else if
+
+            Reset();
+        } // if
+    } // Swipe
+
+    private void Reset()
+    {
+        // These are all reset to the value they were at the beginning
+        startTouch = swipeDelta = Vector2.zero;
+        isDragging = false;
+    } // Reset
+
     void Wrap()
     {
         switch (direction)

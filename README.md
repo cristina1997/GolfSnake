@@ -16,6 +16,10 @@ If the snake consumes at least 3 mice in 1 minute and 30 seconds its speed incre
 
 When the snake eats itself, it dies and you have to restart the game.
 
+
+***
+
+## Controls
 ### Windows PC
 
 * Use keyboard arrow keys to move the snake

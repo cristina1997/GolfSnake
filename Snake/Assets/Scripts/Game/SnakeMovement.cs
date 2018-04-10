@@ -21,7 +21,16 @@ public class SnakeMovement : MonoBehaviour
     public string direction;
     public const float speedTimerInit = 0.05f, speedResetInit = 300f, startSpeedValue = 0.5f;
     public float speedTimerCountdown, speedResetCountdown;
-   // private Vector2 touchOrigin = -Vector2.one;                                 
+    //public bool tap, swipeLeft, swipeRight, swipeUp, swipeDown;
+    //private Vector2 startTouch, swipeDelta;
+
+
+    //public Vector2 SwipeDelta { get { return swipeDelta; } }
+    //public bool SwipeLeft { get { return swipeLeft; } }
+    //public bool SwipeRight { get { return swipeRight; } }
+    //public bool SwipeUp { get { return swipeUp; } }
+    //public bool SwipeDown { get { return swipeDown; } }
+
 
     private void Start()
     {
@@ -184,7 +193,15 @@ public class SnakeMovement : MonoBehaviour
 
     } // ChangeDirectionMobile
 
- 
+    //public void ChangeDirectionMob()
+    //{
+    //    tap = swipeLeft = swipeRight = swipeUp = swipeDown = false;
+    //}
+
+    //private void Reset()
+    //{
+    //    startTouch = swipeDelta = Vector2.Zero
+    //}
     void Wrap()
     {
         switch (direction)

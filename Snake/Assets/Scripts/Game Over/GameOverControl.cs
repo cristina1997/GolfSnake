@@ -31,4 +31,9 @@ public class GameOverControl : MonoBehaviour {
         Application.Quit();
     } // Quit
 
+    public void DeleteScore()
+    {
+        PlayerPrefs.DeleteKey("HighScore");
+    } // DeleteScore
+
 } // GameOverControl

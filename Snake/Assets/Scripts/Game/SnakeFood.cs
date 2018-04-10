@@ -14,7 +14,7 @@ public class SnakeFood : MonoBehaviour
 
     public int xSpawn, ySpawn;
     public static int foodEaten;
-    public Text scoreText;
+    public Text highScore;
     public int score, temp;
 
     public static int speedUpFood, healthyFood;
@@ -33,7 +33,7 @@ public class SnakeFood : MonoBehaviour
 
     private void Start()
     {
-        PlayerPrefs.SetInt("HighScore", 0);
+        PlayerPrefs.GetInt("HighScore");
         snakeHealth = GetComponent<SnakeHealth>();
         CreateFood();
         foodEaten = 0;
@@ -180,7 +180,7 @@ public class SnakeFood : MonoBehaviour
             healthyFood++;                                                                                  // Counts the amount of food eaten by the snake that is needed for the snake to not lose health
 
             score += 10;
-            scoreText.text = score.ToString();                                                              // Outputs the score to the text field in the Score game object
+            highScore.text = score.ToString();                                                              // Outputs the score to the text field in the Score game object
 
             temp = PlayerPrefs.GetInt("HighScore");
 

@@ -1,9 +1,7 @@
 # SnakeGame
 This is a classic snake game developed in Unity using C#.
 
-<img src="https://github.com/cristina1997/SnakeGame/blob/master/Snake/Assets/Sprites/Screenshots/SnakeGame.PNG" alt="alt text" width="100" height="100">
-
-
+<img src="https://github.com/cristina1997/SnakeGame/blob/master/Snake/Assets/Sprites/Screenshots/SnakeGame.PNG" alt="alt text" width="400" height="400">
 
 
 ***

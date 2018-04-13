@@ -1,5 +1,5 @@
 # Snake Game
-This is a classic snake game developed in Unity using C#.
+This is a classic snake game developed in Unity (version 2017.3.1f1) using C#.
 
 ![alt text](https://github.com/cristina1997/SnakeGame/blob/master/Snake/Assets/Sprites/Screenshots/SnakeGame.PNG)
 
